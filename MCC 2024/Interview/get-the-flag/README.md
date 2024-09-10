@@ -31,7 +31,7 @@ Then we search for the score value which is 0. We can see there are a lot of add
 
 Next, we will play the game and make the high-score and the current score is different.
 
-# Step 6:
+## Step 6:
 
 Then we go back **scanmem** and search for the current score value. We can see there is only 1 address match the value, therefore we just modify that value to 16525.
 

@@ -18,7 +18,7 @@ Run the "get-the-flag" executable.
 Without closing the executable, then we use **ps aux | grep "get-the-flag"** to find the pid for the executable, this will be used for the **scanmem**.
 
 ## Step 3:
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/d23794c8-ca6a-483b-a369-0448cb97fe7c)
 
 Next, we run the **scanmem** and attach the pid of the "get-the-flag".
 
@@ -28,13 +28,16 @@ Next, we run the **scanmem** and attach the pid of the "get-the-flag".
 Then we search for the score value which is 0. We can see there are a lot of addresses with value of 0. 
 
 ## Step 5:
+![image](https://github.com/user-attachments/assets/38c17edc-9256-4710-8bdc-6b048824c0cc)
 
 Next, we will play the game and make the high-score and the current score is different.
 
 ## Step 6:
+![image](https://github.com/user-attachments/assets/d6009629-cff5-48da-8130-9483ba4091ea)
 
 Then we go back **scanmem** and search for the current score value. We can see there is only 1 address match the value, therefore we just modify that value to 16525.
 
 ## Step 7:
+![image](https://github.com/user-attachments/assets/e5859491-b866-425e-895b-c6dfb97a40e3)
 
 We just go back the executable and run it and then we can get our flag.

@@ -1,6 +1,5 @@
 # Get-The-Flag
-
-![image](https://github.com/user-attachments/assets/606f752d-0a19-4ea6-94b8-862fc6550be1)
+![image](https://github.com/user-attachments/assets/9b3499af-2fdf-47bb-8d9f-5519bae31226)
 
 After unzip the file, we can set that a get-the-flag file, I do the basic file analysis and notice that the get-the-flag is a executable file. So I change the mode of the file to executable.
 
@@ -9,6 +8,7 @@ Then by running the executable, we see that is a snake game. Besides, that is a 
 To do this runtime modification, we can use **_scanmem (commandline)_** or **_GameConqueror (Linux GUI)_** or **_Cheat Engine (Windows GUI)_**
 
 ## Step 1:
+![image](https://github.com/user-attachments/assets/969ff140-d1e4-4293-a94b-10bcdb5c4ab1)
 
 Run the "get-the-flag" executable.
 

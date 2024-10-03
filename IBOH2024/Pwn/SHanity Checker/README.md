@@ -47,7 +47,7 @@ undefined  [16] FUN_00401174(void)
 
 </details>
 
-## Step 2
+## Step 2:
 
 ![image](https://github.com/user-attachments/assets/1c8f3695-9a71-4f14-bbe8-ee55c78c2f40)
 
@@ -56,7 +56,7 @@ One interesting thing in this FUN_00401174 assembly is that, we can notice one w
 
 ![image](https://github.com/user-attachments/assets/bb234ee7-9b36-45e9-b4d3-802c2a42b7d8)
 
-## Step 3
+## Step 3:
 
 So at this point, I pretty sure that is just a simply **Buffer Overflow**, because that when we call that FUN_00401174, it will spawn a shell. And the main function **scanf** not specifying any size to be input to the buffer. Therefore, we can modify the **return address** to the FUN_00401174.
 

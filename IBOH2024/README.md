@@ -7,5 +7,5 @@
 
 # PWN
 - [SHanity Checker](https://github.com/hanming0510/CTF-WriteUp/tree/main/IBOH2024/Pwn/SHanity%20Checker)
-- [Favourite Shell]()
+- [Favourite Shell](https://github.com/hanming0510/CTF-WriteUp/tree/main/IBOH2024/Pwn/Favourite%20Shell)
 - [Anti Shell](https://github.com/hanming0510/CTF-WriteUp/tree/main/IBOH2024/Pwn/Anti%20Shell)

@@ -137,7 +137,9 @@ sudo docker run -v "`pwd`:/chal" -it <HASH> bash # Replace the hash with user@ha
 ```
 
 Example:
-**PLACEHOLDER**
+
+![image](https://github.com/user-attachments/assets/9ffb78a7-d717-4c4d-8819-9c1e5d1c6945)
+
 
 After that just cd (change directory) into the **/chal** directory, then use command **ldd <binary>** to see which libc is being used.
 
@@ -146,7 +148,9 @@ ldd <binary>
 ```
 
 Example:
-**PLACEHOLDER**
+
+![image](https://github.com/user-attachments/assets/9e64fb7d-c18b-4aed-bdb3-511b63153e7f)
+
 
 From here, we can tell that the chal is running with **libc.so.6**. Then we can just copy the libc to our localhost by using the following command:
 
@@ -155,15 +159,30 @@ cp /lib/x86_64-linux-gnu/<LIBC> . # Use . when you are in the same directory
 ```
 
 Example:
-**PLACEHOLDER**
+
+![image](https://github.com/user-attachments/assets/905d59e1-ed7c-4f37-b6f4-4add604e879f)
 
 So now we can see that the libc is already in our localhost's directory, then we have to **patch the binary** using the **new libc** that taken from the docker. We can do this by using the command [pwninit](https://github.com/io12/pwninit). But before that, let use see the default libc and after the new libc using **ldd**.
 
 **_BEFORE_**
-**PLACEHOLDER**
+
+![image](https://github.com/user-attachments/assets/64037dab-0de6-4889-ad97-6eddc6bbb1e3)
+
+The libc is running from **/lib/x86_64-linux-gnu/libc.so.6** in our **host**.
 
 **_AFTER (pwninit)_**
-**PLACEHOLDER**
+
+![image](https://github.com/user-attachments/assets/a071ac19-dc1c-4d71-88d0-bad1b375661b)
+
+Now the libc is running from **./libc.so.6** which is the libc we taken from the **Docker**.
+
+**_Why both the libc is from '/lib/x86_64-linux-gnu/lib.so.6' but still different?_**
+
+> When we use the **ldd** command on the Docker and the host, we can see that both of them are from **/lib/x86_64-linux-gnu/libc.so.6**. But why it still cannot works and have to copy the libc from the Docker? It's because that actually the **/lib/x86_64-linux-gnu/libc.so.6** is a **symlink(symbolic link)** file that will link the **libc** without needing to reference the specific version of the **GNU C Library (glibc)**, and system updates can easily update the symlink to point to the newer version of the library. Therefore, even though both of them are from /lib/x86_64-linux-gnu/libc.so.6, but actually they are referencing to different version of the glibc.
+
+**_What if the challenge didn't provide any Dockerfile?_**
+
+> When we encounter challenge like this **(ret2system)** but **no Dockerfile provided**. Then what we can do is to leak out **at least 2** libc symbol's address. After we have the libc leak, then we can go to [libc.rip](libc.rip) and put the symbol's name and its **last 3 digits** address. Then it will show which libc is compatible with it. Then we can just download it from there.
 
 ## FINALLL !!!
 
@@ -218,6 +237,8 @@ p.interactive()
 ```
 
 </details>
+
+![image](https://github.com/user-attachments/assets/f1451cbc-ea2e-4b65-b87e-02970c22a650)
 
 Just like that and we spawn a shell !!
 

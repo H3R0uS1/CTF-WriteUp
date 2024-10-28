@@ -126,9 +126,9 @@ After XOR with the value, there is something suspicious at the output, which is 
 
 Reference: [Net user](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/cc771865(v=ws.11))
 
-Lastly, since the flag format for this challenge is **IBOH24{password}**. So that's mean I got the flag for this challenge, which is **IBOH24{wh0s_d4t?!?1!}**.
+Lastly, since the flag format for this challenge is **IBOH24{password}**. So that's mean I already got the flag for this challenge.
 
-
+> FLAG: IBOH24{wh0s_d4t?!?1!}
 
 
 

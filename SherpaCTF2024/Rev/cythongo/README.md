@@ -199,3 +199,124 @@ argv = (ctypes.c_char_p * 2)(
 fexecve(fd, argv, argv)
 
 ```
+
+So by running the python file, we can see that actually also showing the same thing as before **"Enter Password:"**, so that I assume that the bytes after decrypt it will be the **GO** file.
+
+![image](https://github.com/user-attachments/assets/b722599b-6ce7-43ab-9f19-5c2150518256)
+
+So that after assuming the file is actually a **GO** file. Then I just ask chatgpt instead of executing this python file, help me to save into another binary file. Which is the third file.
+
+![image](https://github.com/user-attachments/assets/76066219-655d-45ae-8504-043c2fb642ab)
+
+## Step 8
+
+Now I know that, I come to the FINAL STAGE, but the problem is whenever I try to execute the **cpythongo3.bin**, it will shows **HACKER ALERT !!**
+
+![image](https://github.com/user-attachments/assets/65172ac8-ca1c-40df-8dee-7ee608d8a168)
+
+So I just use Ghidra and decompile the code and see what is going on inside. So after I decompile the code, I just search for the **HACKER ALERT !!** thingy, because I want to see which instruction is actually making it to show **HACKER ALERT**. 
+
+![image](https://github.com/user-attachments/assets/f8d8c95f-d973-4c5d-b04a-e4c964ec5baa)
+
+So we can see the **HACKER ALERT** data segment showing at which location, then we just follow the same thing. Use **References** table and find out where it use the **HACKER ALERT** string and then see what is it doing.
+
+![image](https://github.com/user-attachments/assets/e81f109c-c58c-413f-b0ed-24794089796d)
+
+So I see when it "TEST the AL, AL", then it will **JZ** to normal function, if not will shows **HACKER ALERT**. So I just write a basic script to patch the **JZ** instruction to **JNZ**.
+
+## Step 9
+
+```python
+f = open('cpythongo3.bin', 'rb')
+
+data = f.read()
+data_write = list(data)
+
+offset = 0x4a618c - 0x400000
+
+data_write[offset] = 0x75
+
+with open('cpythongo3_patched.bin', 'wb') as file:
+	file.write(bytearray(data_write))
+
+```
+
+![image](https://github.com/user-attachments/assets/d1adfd94-d131-41c6-8cf0-8072294b419a)
+
+By running this script, it patched the **JZ** instruction to **JNZ**. Then I just run the new file again, now it without the **HACKER ALERT**.
+
+![image](https://github.com/user-attachments/assets/7a899d12-0ff6-4f1a-9173-23f9ebf9e7f4)
+
+## Step 10
+
+![image](https://github.com/user-attachments/assets/20cc8914-5e42-4aaf-891d-d639952a2ca7)
+
+So from here, we can see that it runs a **runtime.memequal()** function, so I just assuming this is the checking. After that it will do the TEST AL, AL again then if JZ it will jump to the **Incorrect Password** function there. Therefore, I assume that the **runtime.memequal()** is testing the password see is correct or not.
+
+Then I just set breakpoint at the runtime.memqual and see the comparison between my password and the value that checking.
+
+## Step 11
+
+![image](https://github.com/user-attachments/assets/a6973ad3-8991-4ef1-b6f7-402476b8018d)
+
+Then we can see the memequal is comparing the register **RAX** and **RBX**. To validate if my input is actually changing the **RAX** then I try to input another value.
+
+![image](https://github.com/user-attachments/assets/e5aef114-33b5-4e57-83f2-4b75bc270e7f)
+
+As we can see, when I input other thing then the **RAX** is different. Therefore, I try to bruteforce one by one and see whether got anything can match or not. Eventually, I found that "s" can match the first 2 characters.
+
+![image](https://github.com/user-attachments/assets/abdc96a0-62a2-4346-a3a6-5d784b6afdd6)
+
+Then because **SherpaCTF** so that I just trying to put "h" after the "s". And see the result.
+
+![image](https://github.com/user-attachments/assets/6832cc35-8a60-488e-94f4-e4791f4f71c1)
+
+Now that it shows more correct, so I just continue trying like "e", but it not match then I just try to change to "E" also not match, then I change to "3" then it matched.
+
+![image](https://github.com/user-attachments/assets/7c6d2c5c-ac9f-4f28-bdba-9a8ccaad5aef)
+
+So that at this point, I know that I can actually bruteforce the character 1 by 1 and match it to see whether can get the flag or not.
+
+## Step 12
+
+After trying for a long time, I manage to match the **RAX** with **RBX**. And I got the flag !!!
+
+![image](https://github.com/user-attachments/assets/93e1e52f-d899-40c2-bb80-bed51f4d6692)
+
+![image](https://github.com/user-attachments/assets/8fc3f86a-cdf2-4b1a-86d8-ad544fbbca40)
+
+```python
+from Cryptodome.Cipher import ARC4
+import time
+
+# Known values from the analysis
+TIME_CONSTANT = 0xE7791F700  # Constant subtracted from current time
+TARGET_LEN = 18  # Expected length of input/output
+
+# Attempt to find the correct input
+def brute_force_rc4(input_data):
+    current_timestamp = int(time.time())  # Current UNIX timestamp
+
+    # Iterate over plausible timestamps near the current time
+    for delta in range(-3600, 3600):  # +/- 1 hour window
+        key = max(current_timestamp + delta - TIME_CONSTANT, 0).to_bytes(16, byteorder='big', signed=False)
+        cipher = ARC4.new(key)
+        
+        # Encrypt the input and check conditions
+        encrypted = cipher.encrypt(input_data)
+        if len(encrypted) == TARGET_LEN:  # Example condition
+            return encrypted, key
+    return None, None
+
+# Test the function
+input_str = "SHCTF24"  # Replace with the actual input format if known
+result, key_used = brute_force_rc4(input_str.encode())
+if result:
+    print(f"Flag found! Encrypted: {result}, Key: {key_used.hex()}")
+else:
+    print("Failed to recover the flag.")
+```
+
+Using my ways is actually bruteforce myself, because I don't know how to write a script that attach to gdb to do the bruteforce. Thanks to my friend and chatgpt for helping out to create the exploit script so can get the correct password much more easier !!.
+
+> Flag: SHCTF24{R0j4k_3_b1n4r135}

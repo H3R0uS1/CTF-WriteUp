@@ -24,7 +24,7 @@ So after this, I know the main goal of this challenge is need to find a **correc
 
 ![image](https://github.com/user-attachments/assets/870a341c-c403-4ea9-afbc-1d52779e65f6)
 
-But when I go inside the **Ghidra** and trying to look for "Enter Password" string, I didn't maange to found it. So because of the title of the challenge and also I did some challenge like this before, which can be found in the [IBOH2024 Crack the Hex]. Then I assume that this is actually a **GO** language file hide in a **Python** file and the **Python** file inside this **C** file. That's why the reason I cannot find the string **""Enter Password:"**. 
+But when I go inside the **Ghidra** and trying to look for "Enter Password" string, I didn't maange to found it. So because of the title of the challenge and also I did some challenge like this before, which can be found in the [IBOH2024 Crack the Hex](https://github.com/hanming0510/CTF-WriteUp/tree/main/IBOH2024/Rev/Crack%20the%20Hex). Then I assume that this is actually a **GO** language file hide in a **Python** file and the **Python** file inside this **C** file. That's why the reason I cannot find the string **""Enter Password:"**. 
 
 Then after knowing what to do, then I just try to find out where is the suspicious function that doing this process.
 

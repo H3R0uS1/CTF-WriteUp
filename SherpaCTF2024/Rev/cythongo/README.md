@@ -285,38 +285,6 @@ After trying for a long time, I manage to match the **RAX** with **RBX**. And I 
 
 ![image](https://github.com/user-attachments/assets/8fc3f86a-cdf2-4b1a-86d8-ad544fbbca40)
 
-```python
-from Cryptodome.Cipher import ARC4
-import time
-
-# Known values from the analysis
-TIME_CONSTANT = 0xE7791F700  # Constant subtracted from current time
-TARGET_LEN = 18  # Expected length of input/output
-
-# Attempt to find the correct input
-def brute_force_rc4(input_data):
-    current_timestamp = int(time.time())  # Current UNIX timestamp
-
-    # Iterate over plausible timestamps near the current time
-    for delta in range(-3600, 3600):  # +/- 1 hour window
-        key = max(current_timestamp + delta - TIME_CONSTANT, 0).to_bytes(16, byteorder='big', signed=False)
-        cipher = ARC4.new(key)
-        
-        # Encrypt the input and check conditions
-        encrypted = cipher.encrypt(input_data)
-        if len(encrypted) == TARGET_LEN:  # Example condition
-            return encrypted, key
-    return None, None
-
-# Test the function
-input_str = "SHCTF24"  # Replace with the actual input format if known
-result, key_used = brute_force_rc4(input_str.encode())
-if result:
-    print(f"Flag found! Encrypted: {result}, Key: {key_used.hex()}")
-else:
-    print("Failed to recover the flag.")
-```
-
-Using my ways is actually bruteforce myself, because I don't know how to write a script that attach to gdb to do the bruteforce. Thanks to my friend and chatgpt for helping out to create the exploit script so can get the correct password much more easier !!.
+Using my ways is actually just bruteforce each character myself, because I don't know how to write a script that attach to gdb to do the bruteforce. But it is possible to write a script to bruteforce the character and find the password !!
 
 > Flag: SHCTF24{R0j4k_3_b1n4r135}
